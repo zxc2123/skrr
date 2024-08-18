@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자야구</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>숫자야구</h1>
+        <label for="numberRange">숫자범위:</label>
+        <select id="numberRange">
+            <option value="9">1~9</option>
+            <option value="11">1~11</option>
+            <option value="13">1~13</option>
+            <option value="15">1~15</option>
+        </select>
+        <label for="digitCount">자릿수:</label>
+        <select id="digitCount">
+            <option value="3">3자리</option>
+            <option value="4">4자리</option>
+            <option value="5">5자리</option>
+            <option value="6">6자리</option>
+            <option value="7">7자리</option>
+        </select>
+        <div id="inputGrid" class="input-grid"></div>
+        <button id="submitButton">정답 제출</button>
+        <div class="message" id="resultMessage"></div>
+        <div id="tryCount">시도횟수: 0</div>
+        <button id="ruleButton">규칙</button>
+        <button id="restartButton" class="hidden">다시하기</button>
+        <div id="rulesPopup" class="popup">
+            <div class="popup-content">
+                <span id="closePopup" class="close">&times;</span>
+                <h2>숫자야구 규칙</h2>
+                <p>고른 숫자 범위와 자릿수에 맞게 컴퓨터가 중복 없이 숫자를 뽑습니다. 그 수를 예측하여 정답 제출 위에 네모칸에 입력합니다. 수만 맞으면 볼, 자리 위치까지 맞으면 스트라이크입니다. 모두 스트라이크가 되면 승리합니다.!</p>
+            </div>
+        </div>
+        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
