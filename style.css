@@ -1,37 +1,52 @@
+/* 전체 화면 기본 스타일 */
 body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 70vh;
-    margin: 0 auto;
-    text-align: center;
+    height: 100vh;
+    margin: 0;
     background-color: #f4f4f4;
-    position: auto;
+    text-align: center;
+    overflow: hidden; /* 화면 스크롤 방지 */
 }
 
+/* 게임 컨테이너 */
 .container {
     width: 400px;
-    position: relative;
+    max-height: 95vh;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* 드롭다운, 버튼, 입력창 */
 select, input, button {
     margin: 10px 0;
     padding: 10px;
     font-size: 16px;
 }
 
+/* 숫자 입력창 영역 */
 .input-grid {
     display: flex;
     justify-content: center;
     margin: 20px 0;
+    flex-wrap: wrap;
 }
 
+/* 각 숫자 입력창 스타일 */
 .input-grid input {
     width: 40px;
     height: 40px;
     margin: 0 10px;
     text-align: center;
+    font-size: 18px;
     -moz-appearance: textfield;
     -webkit-appearance: none;
     appearance: none;
@@ -43,38 +58,55 @@ select, input, button {
     margin: 0;
 }
 
+/* 모든 숫자 입력창에 일관된 숫자 입력 모양 */
 input[type="number"] {
     -moz-appearance: textfield;
     -webkit-appearance: none;
     appearance: none;
 }
 
+/* 메시지 영역 */
 .message {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     color: #333;
-    margin: 20px 0;
+    margin: 10px 0;
     text-align: center;
 }
 
 .result-message {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: bold;
     color: green;
     text-align: center;
 }
 
+/* 시도횟수 표시 */
 #tryCount {
-    font-size: 20px;
+    font-size: 18px;
     margin: 10px 0;
 }
 
+/* 다시하기 버튼 숨기기 */
 .hidden {
-    display: flex;
-    margin-left: 156px;
+    display: none;
 }
 
-/* 팝업 스타일 */
+/* 기록 표시 영역 */
+#historyDisplay {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 100%;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+/* 팝업 전체 화면 배경 */
 .popup {
     display: none; /* 기본적으로 숨김 */
     position: fixed;
@@ -88,6 +120,7 @@ input[type="number"] {
     z-index: 1000;
 }
 
+/* 팝업 내부 박스 */
 .popup-content {
     background-color: #fff;
     padding: 20px;
@@ -95,8 +128,10 @@ input[type="number"] {
     width: 300px;
     text-align: center;
     position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* 팝업 닫기 버튼 */
 .close {
     position: absolute;
     top: 10px;
