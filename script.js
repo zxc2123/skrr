@@ -62,7 +62,7 @@ function checkAnswer() {
     tryCountDisplay.textContent = `시도횟수: ${attempts}`;
     
     const resultText = strikes === digitCount ? 
-        `정답입니다! ${attempts} 번 만에 맞히셨습니다.` :
+        `정답입니다! ${attempts} 번 만에 맞히셨습니다.` ;
         `${balls} 볼 ${strikes} 스트라이크`;
 
     resultMessage.textContent = resultText;
@@ -103,3 +103,4 @@ closePopup.addEventListener('click', closePopupHandler);
 
 // Initialize the game
 resetGame();
+
