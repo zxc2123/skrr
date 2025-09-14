@@ -12,12 +12,6 @@ const ruleButton = document.getElementById('ruleButton');
 const rulesPopup = document.getElementById('rulesPopup');
 const closePopup = document.getElementById('closePopup');
 
-// ✅ 기록 영역 생성 및 스타일 연결
-const historyDisplay = document.createElement('div');
-historyDisplay.id = 'historyDisplay';
-document.querySelector('.container').appendChild(historyDisplay);
-
-// ✅ 랜덤 숫자 생성
 function generateSecretNumbers(range, count) {
     const numbers = Array.from({ length: range }, (_, i) => i + 1);
     const result = [];
@@ -28,7 +22,6 @@ function generateSecretNumbers(range, count) {
     return result;
 }
 
-// ✅ 입력창 구성
 function updateInputGrid() {
     const count = parseInt(digitCountSelect.value);
     const max = parseInt(numberRangeSelect.value);
@@ -44,12 +37,10 @@ function updateInputGrid() {
     }
 }
 
-// ✅ 정답 확인
 function checkAnswer() {
     const inputs = Array.from(inputGrid.getElementsByTagName('input'));
     const userNumbers = inputs.map(input => parseInt(input.value));
 
-    // 입력 유효성 확인
     if (
         userNumbers.some(num => isNaN(num)) ||
         new Set(userNumbers).size !== userNumbers.length
@@ -84,18 +75,8 @@ function checkAnswer() {
         submitButton.classList.add('hidden');
         restartButton.classList.remove('hidden');
     }
-
-    addHistory(userNumbers, resultText);
 }
 
-// ✅ 기록 추가
-function addHistory(numbers, result) {
-    const entry = document.createElement('div');
-    entry.textContent = `${numbers.join(', ')} → ${result}`;
-    historyDisplay.appendChild(entry);
-}
-
-// ✅ 게임 리셋
 function resetGame() {
     const range = parseInt(numberRangeSelect.value);
     const count = parseInt(digitCountSelect.value);
@@ -104,18 +85,15 @@ function resetGame() {
     resultMessage.style.color = 'black';
     tryCountDisplay.textContent = '시도횟수: 0';
     attempts = 0;
-    historyDisplay.innerHTML = '';
 
     submitButton.classList.remove('hidden');
     restartButton.classList.add('hidden');
 
     updateInputGrid();
     secretNumbers = generateSecretNumbers(range, count);
-
-    console.log("🔐 Secret Numbers:", secretNumbers); // 디버깅용
+    console.log("🔐 Secret Numbers:", secretNumbers);
 }
 
-// ✅ 규칙 팝업 열기/닫기
 function openPopup() {
     rulesPopup.style.display = 'flex';
 }
@@ -123,7 +101,6 @@ function closePopupHandler() {
     rulesPopup.style.display = 'none';
 }
 
-// ✅ 이벤트 연결
 numberRangeSelect.addEventListener('change', resetGame);
 digitCountSelect.addEventListener('change', resetGame);
 submitButton.addEventListener('click', checkAnswer);
@@ -131,5 +108,4 @@ restartButton.addEventListener('click', resetGame);
 ruleButton.addEventListener('click', openPopup);
 closePopup.addEventListener('click', closePopupHandler);
 
-// ✅ 초기 실행
 resetGame();
