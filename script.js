@@ -1,6 +1,5 @@
 let secretNumbers = [];
 let attempts = 0;
-const history = [];
 
 const numberRangeSelect = document.getElementById('numberRange');
 const digitCountSelect = document.getElementById('digitCount');
@@ -12,6 +11,13 @@ const restartButton = document.getElementById('restartButton');
 const ruleButton = document.getElementById('ruleButton');
 const rulesPopup = document.getElementById('rulesPopup');
 const closePopup = document.getElementById('closePopup');
+
+// ✅ 기록 저장용 영역 동적으로 생성 (없으므로 추가)
+const historyDisplay = document.createElement('div');
+historyDisplay.id = 'historyDisplay';
+historyDisplay.style.marginTop = '20px';
+historyDisplay.style.fontSize = '16px';
+document.querySelector('.container').appendChild(historyDisplay);
 
 function generateSecretNumbers(range, count) {
     const numbers = Array.from({ length: range }, (_, i) => i + 1);
@@ -25,13 +31,16 @@ function generateSecretNumbers(range, count) {
 
 function updateInputGrid() {
     const digitCount = parseInt(digitCountSelect.value);
+    const range = parseInt(numberRangeSelect.value);
     inputGrid.innerHTML = '';
+
     for (let i = 0; i < digitCount; i++) {
         const input = document.createElement('input');
         input.type = 'number';
         input.min = 1;
-        input.max = 15;
+        input.max = range;
         input.required = true;
+        input.classList.add('guess-input');
         inputGrid.appendChild(input);
     }
 }
@@ -42,16 +51,18 @@ function checkAnswer() {
     const range = parseInt(numberRangeSelect.value);
     const digitCount = parseInt(digitCountSelect.value);
 
-    if (userNumbers.length !== digitCount || new Set(userNumbers).size !== digitCount) {
-        resultMessage.textContent = '모든 숫자를 정확히 입력해주세요!';
+    // 유효성 검사
+    if (userNumbers.includes(NaN) || userNumbers.length !== digitCount || new Set(userNumbers).size !== digitCount) {
+        resultMessage.textContent = '모든 숫자를 정확히, 중복 없이 입력해주세요!';
+        resultMessage.style.color = 'red';
         return;
     }
 
     let strikes = 0;
     let balls = 0;
 
-    userNumbers.forEach((num, index) => {
-        if (num === secretNumbers[index]) {
+    userNumbers.forEach((num, idx) => {
+        if (num === secretNumbers[idx]) {
             strikes++;
         } else if (secretNumbers.includes(num)) {
             balls++;
@@ -60,47 +71,56 @@ function checkAnswer() {
 
     attempts++;
     tryCountDisplay.textContent = `시도횟수: ${attempts}`;
-    
-    const resultText = strikes === digitCount ? 
-        `정답입니다! ${attempts} 번 만에 맞히셨습니다.` ;
-        `${balls} 볼 ${strikes} 스트라이크`;
+
+    const resultText = strikes === digitCount
+        ? `🎉 정답입니다! ${attempts}번 만에 맞히셨습니다.`
+        : `${balls} 볼 ${strikes} 스트라이크`;
 
     resultMessage.textContent = resultText;
+    resultMessage.style.color = strikes === digitCount ? 'green' : 'black';
+
     if (strikes === digitCount) {
         submitButton.classList.add('hidden');
         restartButton.classList.remove('hidden');
-    } else {
-        addHistory(userNumbers, `${balls} 볼 ${strikes} 스트라이크`);
     }
+
+    addHistory(userNumbers, resultText);
+}
+
+function addHistory(numbers, result) {
+    const entry = document.createElement('div');
+    entry.textContent = `${numbers.join(', ')} → ${result}`;
+    historyDisplay.appendChild(entry);
 }
 
 function resetGame() {
     resultMessage.textContent = '';
     tryCountDisplay.textContent = '시도횟수: 0';
-    submitButton.classList.remove('hidden')
+    submitButton.classList.remove('hidden');
     restartButton.classList.add('hidden');
     updateInputGrid();
     attempts = 0;
-    secretNumbers = generateSecretNumbers(parseInt(numberRangeSelect.value), parseInt(digitCountSelect.value));
-    historyDisplay.innerHTML = ''; // 입력 기록 초기화
+    const range = parseInt(numberRangeSelect.value);
+    const count = parseInt(digitCountSelect.value);
+    secretNumbers = generateSecretNumbers(range, count);
+    historyDisplay.innerHTML = '';
 }
 
+// 팝업 열고 닫기
 function openPopup() {
     rulesPopup.style.display = 'flex';
 }
-
 function closePopupHandler() {
     rulesPopup.style.display = 'none';
 }
 
-// Event Listeners
-numberRangeSelect.addEventListener('change', updateInputGrid);
-digitCountSelect.addEventListener('change', updateInputGrid);
+// 이벤트 바인딩
+numberRangeSelect.addEventListener('change', resetGame);
+digitCountSelect.addEventListener('change', resetGame);
 submitButton.addEventListener('click', checkAnswer);
 restartButton.addEventListener('click', resetGame);
 ruleButton.addEventListener('click', openPopup);
 closePopup.addEventListener('click', closePopupHandler);
 
-// Initialize the game
+// 초기화
 resetGame();
-
